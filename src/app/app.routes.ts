@@ -4,6 +4,7 @@ import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from './guard/auth.guard';
 import { EmpleadoDashboard } from './components/empleado-dashboard/empleado-dashboard.component';
 import { EmpleadoSecretariaComponent } from './components/empleado-secretaria/empleado-secretaria.component';
+import { EmpleadoTecnicoComponent } from './components/empleado-tecnico/empleado-tecnico.component';
 
 export const routes: Routes = [
   // Solo el componente de login se carga para esta ruta
@@ -13,8 +14,8 @@ export const routes: Routes = [
  
   {path: 'empleado-dashboard' , component: EmpleadoDashboard, canActivate:[AuthGuard], data: {userType: 'admin'}}, // aqui estaran dos targetas para gestionar secretaria y tecnico
   {path: 'empleado-secretaria' , component: EmpleadoSecretariaComponent, canActivate:[AuthGuard], data: {userType: 'admin'}},
-  //{path: 'empleado-tecnico' , component: EmpleadoTecnicoComponent, canActivate:[AuthGuard], data: {userType: 'admin'}},
- // {path: 'solicitud-servicio' , component: SolicitudServicioComponent, canActivate:[AuthGuard], data: {userType: 'admin'}},
+  {path: 'empleado-tecnico' , component: EmpleadoTecnicoComponent, canActivate:[AuthGuard], data: {userType: 'admin'}},
+  //{path: 'solicitud-servicio' , component: SolicitudServicioComponent, canActivate:[AuthGuard], data: {userType: 'admin'}},
 
   //{path: 'solicitud-servicio' , component: SolicitudServicioComponent, canActivate:[AuthGuard], data: {userType: 'secretaria'}},
   

@@ -256,8 +256,8 @@ body {
     message: string = '';
   
     constructor(private authService: AuthService, private router: Router) {}
-  
-    login() {
+  /*
+    login() {//LOGIN CON 123
       // Verifica si el username y el password son "123"
       if (this.numeroDocumento === '123' && this.password === '123') {
         // Simula una respuesta exitosa del servidor
@@ -282,7 +282,35 @@ body {
         // Si las credenciales son incorrectas
         this.message = 'Credenciales ERRONEAS';
       }
-    }
+    }*/
+
+    //LOGIN CON TIPOS DE CARGO
+    login() {
+        this.authService.login(this.numeroDocumento, this.password).subscribe(
+          response => {
+            if (response.message === 'Login successful') {
+              localStorage.setItem('authToken', 'true'); // Guarda el token
+              localStorage.setItem('userType', response.userType); // Guarda el tipo de usuario
+      
+              // Actualiza el estado de autenticación en AuthService
+              this.authService.updateAuthStatus(true);
+      
+              // Redirige al dashboard adecuado según el tipo de usuario
+              if (response.userType === 'administrador') {
+                this.router.navigate(['/empleado-dashboard']);
+              } else if (response.userType === 'secretaria') {
+                this.router.navigate(['/secretaria-dashboard']);
+              } 
+            } else {
+              this.message = 'Credenciales ERRONEAS';
+            }
+          },
+          error => {
+            console.error('Error:', error);
+            this.message = 'Error en el servidor o credenciales incorrectas.';
+          }
+        );
+      }
     
 
     isPasswordVisible: boolean = false;

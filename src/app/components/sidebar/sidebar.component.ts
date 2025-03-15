@@ -67,7 +67,7 @@ interface MenuItem {
       margin: 0.5rem 0;
       border-radius: 4px;
       transition: background-color 0.3s;
-      display: block;//pruebaaaaaaa
+      display: block;
       
     }
     nav a:hover, nav a.active {
@@ -79,10 +79,12 @@ export class SidebarComponent {
   menuItems: MenuItem[] = [
 
 
+    { path: '/empleado-dashboard', icon: 'fa-home', label: 'Gestionar Empleados' },
+    { path: '/clientes', icon: 'fa-home', label: 'Gestionar Clientes' },
     { path: '/solicitudServicio', icon: 'fa-home', label: 'Solicitud de Servicios' },
     { path: '/solicitudSoporte', icon: 'fa-list', label: 'Solicitud de Soportes' },
     { path: '/MantenimientoSoporte', icon: 'fa-chart-bar', label: 'Mantenimiento de soportes' },
-    { path: '/empleados', icon: 'fa-cog', label: 'Gestionar Empleados' }
+    
     
 
   ];
