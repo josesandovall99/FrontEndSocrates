@@ -6,6 +6,7 @@ import { EmpleadoDashboard } from './components/empleado-dashboard/empleado-dash
 import { EmpleadoSecretariaComponent } from './components/empleado-secretaria/empleado-secretaria.component';
 import { EmpleadoTecnicoComponent } from './components/empleado-tecnico/empleado-tecnico.component';
 import { TipoPlanComponent } from './components/tipo-plan/tipo-plan.component';
+import { ServicioComponent } from './components/solicitud-servicio/solictud-servicio-component';
 
 export const routes: Routes = [
   // Solo el componente de login se carga para esta ruta
@@ -17,8 +18,7 @@ export const routes: Routes = [
   {path: 'empleado-secretaria' , component: EmpleadoSecretariaComponent, canActivate:[AuthGuard], data: {userType: 'admin'}},
   {path: 'empleado-tecnico' , component: EmpleadoTecnicoComponent, canActivate:[AuthGuard], data: {userType: 'admin'}},
   {path: 'tipo-plan', component:TipoPlanComponent, canActivate:[AuthGuard], data: {userType: 'admin'}},
-  
-  //{path: 'solicitud-servicio' , component: SolicitudServicioComponent, canActivate:[AuthGuard], data: {userType: 'admin'}},
+  {path: 'solicitud-servicio' , component: ServicioComponent, canActivate:[AuthGuard], data: {userType: 'secretaria'}},
 
   //{path: 'solicitud-servicio' , component: SolicitudServicioComponent, canActivate:[AuthGuard], data: {userType: 'secretaria'}},
   
