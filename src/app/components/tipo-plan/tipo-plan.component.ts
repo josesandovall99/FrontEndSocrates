@@ -4,10 +4,6 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { TipoPlanService } from 'src/app/services/TipoPlanService';
 import { TipoPlan } from 'src/app/models/TipoPlan';
 
-
-/// Este componente es similar al anterior, pero con un formulario para gestionar tipos de plan
-/// y una tabla para mostrar los tipos de plan existentes.
-/// También se puede agregar, editar y eliminar tipos de plan.
 @Component({
   selector: 'app-tipo-plan-management',
   standalone: true,
@@ -84,7 +80,87 @@ import { TipoPlan } from 'src/app/models/TipoPlan';
     </div>
   `,
   styles: [`
-    /* Estilos similares a los del componente anterior */
+    .tipo-plan-management {
+      padding: 2rem;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    .btn-add {
+      background: #1a237e;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+    }
+    .tipo-plan-form {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    .form-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .btn-save {
+      background: #1a237e;
+      color: white;
+    }
+    .btn-cancel {
+      background: #666;
+      color: white;
+    }
+    .btn-save,
+    .btn-cancel {
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+    }
+    .tipo-plan-table {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background: #f5f5f5;
+    }
+    .actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .btn-edit {
+      color: #1a237e;
+    }
+    .btn-delete {
+      color: #dc3545;
+    }
   `]
 })
 export class TipoPlanComponent implements OnInit {
