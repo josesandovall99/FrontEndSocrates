@@ -5,11 +5,12 @@ import { RouterOutlet } from '@angular/router';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { HeaderComponent } from './components/header/header.component';
 import { AuthService } from './services/auth.service';
+import { TipoPlanComponent } from "./components/tipo-plan/tipo-plan.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, SidebarComponent, HeaderComponent],
+  imports: [CommonModule, RouterOutlet, SidebarComponent, HeaderComponent, TipoPlanComponent],
   template: `
     <!-- Muestra los componentes según la autenticación y la ruta -->
     <ng-container *ngIf="!isLoginRoute; else loginOnly">

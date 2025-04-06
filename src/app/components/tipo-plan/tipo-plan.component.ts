@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { TipoPlanService } from 'src/app/services/TipoPlanService';
+import { TipoPlanService } from 'src/app/services/TipoPlan.Service';
 import { TipoPlan } from 'src/app/models/TipoPlan';
 
 @Component({

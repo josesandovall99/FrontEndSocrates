@@ -7,7 +7,7 @@ import { TipoPlan } from '../models/TipoPlan';
   providedIn: 'root'
 })
 export class TipoPlanService {
-  private apiUrl = 'api/v1/tipos_planes'; // URL de la API
+  private apiUrl = 'https://backendsocrates.onrender.com/api/v1/tipos_planes'; // URL completa de la API
 
   constructor(private http: HttpClient) {}
 

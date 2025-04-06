@@ -84,6 +84,7 @@ export class SidebarComponent {
     { path: '/solicitudServicio', icon: 'fa-home', label: 'Solicitud de Servicios' },
     { path: '/solicitudSoporte', icon: 'fa-list', label: 'Solicitud de Soportes' },
     { path: '/MantenimientoSoporte', icon: 'fa-chart-bar', label: 'Mantenimiento de soportes' },
+    { path: '/tipo-plan', icon: 'fa-chart-bar', label: 'Tipo Plan' }
     
     
 
