@@ -272,10 +272,14 @@ export class EmpleadoSecretariaComponent implements OnInit {
 
   loadSecretarias() {
     this.secretariaService.list().subscribe({
-      next: (secretarias) => (this.secretarias = secretarias),
+      next: (secretarias) => {
+        this.secretarias = secretarias.filter(secretaria => secretaria.cargo === 'SECRETARIA');
+      },
       error: (err) => console.error("Error al cargar secretarias:", err),
     });
   }
+  
+  
 
   showAddForm() {
     this.showForm = true;
