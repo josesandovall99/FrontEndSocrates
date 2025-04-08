@@ -38,17 +38,34 @@ import { Tecnico } from "src/app/models/tecnico.model";
 
           <div class="form-group">
             <label for="numeroDocumento">Número de Documento:</label>
-            <input id="numeroDocumento" type="number" formControlName="numeroDocumento" required />
+            <input id="numeroDocumento" type="text" formControlName="numeroDocumento" required />
+          </div>
+
+          <!-- Tipo de identificación -->
+          <div class="form-group">
+            <label for="tipoDocumento">Tipo identificación:</label>
+            <select id="tipoDocumento" formControlName="tipoDocumento" required class="form-control">
+              <option value="">Seleccione una opción</option>
+              <option *ngFor="let tipo of tiposDocumento" [value]="tipo.valor" [selected]="form.get('tipoDocumento')?.value === tipo.valor">
+                {{ tipo.nombre }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Género -->
+          <div class="form-group">
+            <label for="sexo">Género:</label>
+            <select id="sexo" formControlName="sexo" required class="form-control">
+              <option value="">Seleccione una opción</option>
+              <option *ngFor="let gen of generos" [value]="gen.valor" [selected]="form.get('sexo')?.value === gen.valor">
+                {{ gen.nombre }}
+              </option>
+            </select>
           </div>
 
           <div class="form-group">
-            <label for="tipoDocumentoId">Tipo de Documento:</label>
-            <input id="tipoDocumento" type="text" formControlName="tipoDocumento" required />
-          </div>
-
-          <div class="form-group">
-            <label for="generoId">Género:</label>
-            <input id="generoId" type="number" formControlName="generoId" required />
+            <label for="direccion">Dirección:</label>
+            <input id="direccion" type="text" formControlName="direccion" required />
           </div>
 
           <div class="form-group">
@@ -79,7 +96,7 @@ import { Tecnico } from "src/app/models/tecnico.model";
           <tbody>
             <tr *ngFor="let tecnico of tecnicos">
               <td>{{ tecnico.nombre }}</td>
-              <td>{{ tecnico.tipoDocumento }}</td>
+              <td>{{ getTipoDocumentoNombre(tecnico.tipoDocumento) }}</td>
               <td>{{ tecnico.numeroDocumento }}</td>
               <td>{{ tecnico.telefono }}</td>
               <td>{{ tecnico.correo }}</td>
@@ -153,7 +170,7 @@ import { Tecnico } from "src/app/models/tecnico.model";
       margin-bottom: 0.3rem;
     }
 
-    .form-group input {
+    .form-group input, .form-group select {
       width: 100%;
       padding: 0.5rem;
       border: 1px solid #ccc;
@@ -226,6 +243,16 @@ export class EmpleadoTecnicoComponent implements OnInit {
   editingTecnico: Tecnico | null = null;
   form: FormGroup;
 
+  tiposDocumento = [
+    { valor: 'CC', nombre: 'Cédula de ciudadanía' },
+    { valor: 'PP', nombre: 'Pasaporte' }
+  ];
+
+  generos = [
+    { valor: 'M', nombre: 'Masculino' },
+    { valor: 'F', nombre: 'Femenino' }
+  ];
+
   private tecnicoService = inject(TecnicoService);
   private fb = inject(FormBuilder);
 
@@ -234,17 +261,23 @@ export class EmpleadoTecnicoComponent implements OnInit {
       nombre: ["", Validators.required],
       telefono: ["", Validators.required],
       correo: ["", [Validators.required, Validators.email]],
-      fechaNacimiento: ["", Validators.required],
       numeroDocumento: ["", Validators.required],
-      tipoDocumentoId: [null, Validators.required],
-      generoId: [null, Validators.required],
+      tipoDocumento: ["", Validators.required],
+      sexo: ["", Validators.required],
+      direccion: ["", Validators.required],
       especialidad: ["", Validators.required],
+      cargo: ["TECNICO"],
       estado: [true]
     });
   }
 
   ngOnInit(): void {
     this.loadTecnicos();
+  }
+
+  getTipoDocumentoNombre(valor: string): string {
+    const tipo = this.tiposDocumento.find(t => t.valor === valor);
+    return tipo ? tipo.nombre : valor;
   }
 
   loadTecnicos() {
@@ -257,19 +290,16 @@ export class EmpleadoTecnicoComponent implements OnInit {
   showAddForm() {
     this.showForm = true;
     this.editingTecnico = null;
-    this.form.reset({ estado: true });
+    this.form.reset({ 
+      estado: true,
+      cargo: 'TECNICO'
+    });
   }
 
   create() {
     if (this.form.valid) {
-      const tecnicoData = {
-        ...this.form.value,
-        tipoDocumento: { id: this.form.value.tipoDocumentoId },
-        genero: { id: this.form.value.generoId },
-      };
-      delete tecnicoData.tipoDocumentoId;
-      delete tecnicoData.generoId;
-  
+      const tecnicoData = this.form.value;
+
       if (this.editingTecnico?.id) {
         this.tecnicoService.update(this.editingTecnico.id, tecnicoData).subscribe({
           next: () => {
@@ -297,31 +327,45 @@ export class EmpleadoTecnicoComponent implements OnInit {
       }
     }
   }
-  
 
   editTecnico(tecnico: Tecnico) {
     this.showForm = true;
     this.editingTecnico = tecnico;
-    this.form.patchValue(tecnico);
+    
+    // Asegurarse de que todos los campos se establezcan correctamente
+    this.form.patchValue({
+      ...tecnico,
+      tipoDocumento: tecnico.tipoDocumento,
+      sexo: tecnico.sexo,
+      cargo: 'TECNICO'
+    });
+
+    // Forzar la actualización de los controles del formulario
+    this.form.updateValueAndValidity();
   }
 
   deleteTecnico(id?: number): void {
     if (!id) return;
-    this.tecnicoService.delete(id).subscribe({
-      next: () => {
-        alert("Técnico eliminado con éxito");
-        this.loadTecnicos();
-      },
-      error: (err) => {
-        console.error("Error al eliminar:", err);
-        alert("Hubo un error al eliminar el técnico");
-      }
-    });
+    if (confirm('¿Está seguro de eliminar este técnico?')) {
+      this.tecnicoService.delete(id).subscribe({
+        next: () => {
+          alert("Técnico eliminado con éxito");
+          this.loadTecnicos();
+        },
+        error: (err) => {
+          console.error("Error al eliminar:", err);
+          alert("Hubo un error al eliminar el técnico");
+        }
+      });
+    }
   }
 
   cancelForm() {
     this.showForm = false;
     this.editingTecnico = null;
-    this.form.reset({ estado: true });
+    this.form.reset({ 
+      estado: true,
+      cargo: 'TECNICO'
+    });
   }
 }

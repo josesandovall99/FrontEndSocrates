@@ -70,10 +70,11 @@ interface StatCard {
 })
 export class EmpleadoDashboard {
   stats: StatCard[] = [
-    { icon: 'fa-user-graduate', count: 298, label: 'Gestionar Secretaria', route: '/empleado-secretaria' },
-    { icon: 'fa-book', count: 56, label: 'Gestionar Tecnico', route: '/empleado-tecnico' },
-
+    { icon: 'fa-user-nurse', count: 298, label: 'Gestionar Secretaria', route: '/empleado-secretaria' },
+    { icon: 'fa-hard-hat', count: 56, label: 'Gestionar Técnico', route: '/empleado-tecnico' },
   ];
+  
+  
   
   
 

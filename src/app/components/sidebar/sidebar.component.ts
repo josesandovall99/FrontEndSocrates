@@ -77,16 +77,12 @@ interface MenuItem {
 })
 export class SidebarComponent {
   menuItems: MenuItem[] = [
-
-
-    { path: '/empleado-dashboard', icon: 'fa-home', label: 'Gestionar Empleados' },
-    { path: '/clientes', icon: 'fa-home', label: 'Gestionar Clientes' },
-    { path: '/solicitudServicio', icon: 'fa-home', label: 'Solicitud de Servicios' },
-    { path: '/solicitudSoporte', icon: 'fa-list', label: 'Solicitud de Soportes' },
-    { path: '/MantenimientoSoporte', icon: 'fa-chart-bar', label: 'Mantenimiento de soportes' },
-    { path: '/tipo-plan', icon: 'fa-chart-bar', label: 'Tipo Plan' }
-    
-    
-
+    { path: '/empleado-dashboard', icon: 'fa-user-tie', label: 'Gestionar Empleados' },
+    { path: '/clientes', icon: 'fa-users', label: 'Gestionar Clientes' },
+    { path: '/solicitudServicio', icon: 'fa-clipboard-list', label: 'Solicitud de Servicios' },
+    { path: '/solicitudSoporte', icon: 'fa-tools', label: 'Solicitud de Soportes' },
+    { path: '/MantenimientoSoporte', icon: 'fa-wrench', label: 'Mantenimiento de Soportes' },
+    { path: '/tipo-plan', icon: 'fa-file-alt', label: 'Tipo Plan' }
   ];
+  
 }
