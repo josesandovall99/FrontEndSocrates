@@ -7,7 +7,7 @@ import { Servicio } from '../models/servicio.model';
   providedIn: 'root'
 })
 export class ServicioService {
-  private apiUrl = 'api/v1/servicios'; // URL de la API
+  private apiUrl = 'https://backendsocrates.onrender.com/api/v1/servicios'; // URL de la API
 
   constructor(private http: HttpClient) {}
 
