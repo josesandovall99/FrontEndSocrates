@@ -5,11 +5,11 @@ import { TecnicoService } from "src/app/services/tecnico.service";
 import { Tecnico } from "src/app/models/tecnico.model";
 
 @Component({
-  selector: "app-tecnico-management",
+  selector: "app-empleado-tecnico",
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
   template: `
-      <div class="tecnico-management">
+    <div class="tecnico-management">
       <div class="header">
         <h1>Gestionar Técnicos</h1>
         <button class="btn-add" (click)="showAddForm()">
@@ -23,22 +23,37 @@ import { Tecnico } from "src/app/models/tecnico.model";
         <form [formGroup]="form" (ngSubmit)="create()">
           <div class="form-group">
             <label for="nombre">Nombre:</label>
-            <input id="nombre" formControlName="nombre" required />
+            <input id="nombre" type="text" formControlName="nombre" required />
           </div>
 
           <div class="form-group">
             <label for="telefono">Teléfono:</label>
-            <input id="telefono" formControlName="telefono" required />
+            <input id="telefono" type="text" formControlName="telefono" required />
           </div>
 
           <div class="form-group">
             <label for="correo">Correo:</label>
-            <input id="correo" formControlName="correo" required />
+            <input id="correo" type="email" formControlName="correo" required />
+          </div>
+
+          <div class="form-group">
+            <label for="numeroDocumento">Número de Documento:</label>
+            <input id="numeroDocumento" type="number" formControlName="numeroDocumento" required />
+          </div>
+
+          <div class="form-group">
+            <label for="tipoDocumentoId">Tipo de Documento:</label>
+            <input id="tipoDocumento" type="text" formControlName="tipoDocumento" required />
+          </div>
+
+          <div class="form-group">
+            <label for="generoId">Género:</label>
+            <input id="generoId" type="number" formControlName="generoId" required />
           </div>
 
           <div class="form-group">
             <label for="especialidad">Especialidad:</label>
-            <input id="especialidad" formControlName="especialidad" required />
+            <input id="especialidad" type="text" formControlName="especialidad" required />
           </div>
 
           <div class="form-actions">
@@ -53,6 +68,8 @@ import { Tecnico } from "src/app/models/tecnico.model";
           <thead>
             <tr>
               <th>Nombre</th>
+              <th>Tipo documento</th>
+              <th>Número documento</th>
               <th>Teléfono</th>
               <th>Correo</th>
               <th>Especialidad</th>
@@ -62,7 +79,10 @@ import { Tecnico } from "src/app/models/tecnico.model";
           <tbody>
             <tr *ngFor="let tecnico of tecnicos">
               <td>{{ tecnico.nombre }}</td>
+              <td>{{ tecnico.tipoDocumento }}</td>
+              <td>{{ tecnico.numeroDocumento }}</td>
               <td>{{ tecnico.telefono }}</td>
+              <td>{{ tecnico.correo }}</td>
               <td>{{ tecnico.especialidad }}</td>
               <td class="actions">
                 <button (click)="editTecnico(tecnico)" class="btn-edit">
@@ -79,88 +99,126 @@ import { Tecnico } from "src/app/models/tecnico.model";
     </div>
   `,
   styles: [`
-        .tecnico-management {
+    .tecnico-management {
       padding: 2rem;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
+
     .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 2rem;
     }
+
+    .header h1 {
+      margin: 0;
+      font-size: 2rem;
+      color: #2c3e50;
+    }
+
     .btn-add {
-      background: #1a237e;
+      background-color: #3498db;
       color: white;
-      padding: 0.5rem 1rem;
-      border-radius: 4px;
+      padding: 0.5rem 1.2rem;
+      border: none;
+      border-radius: 0.3rem;
+      cursor: pointer;
     }
+
+    .btn-add i {
+      margin-right: 0.5rem;
+    }
+
     .tecnico-form {
-      background: white;
-      padding: 2rem;
-      border-radius: 8px;
       margin-bottom: 2rem;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 1.5rem;
+      border: 1px solid #ddd;
+      border-radius: 0.5rem;
+      background-color: #f9f9f9;
     }
+
+    .tecnico-form h2 {
+      margin-bottom: 1rem;
+      color: #2c3e50;
+    }
+
     .form-group {
       margin-bottom: 1rem;
     }
+
     .form-group label {
       display: block;
-      margin-bottom: 0.5rem;
+      font-weight: bold;
+      margin-bottom: 0.3rem;
     }
+
     .form-group input {
       width: 100%;
       padding: 0.5rem;
-      border: 1px solid #ddd;
-      border-radius: 4px;
+      border: 1px solid #ccc;
+      border-radius: 0.3rem;
     }
+
     .form-actions {
+      margin-top: 1rem;
       display: flex;
       gap: 1rem;
-      margin-top: 1rem;
     }
+
     .btn-save {
-      background: #1a237e;
+      background-color: #27ae60;
       color: white;
-    }
-    .btn-cancel {
-      background: #666;
-      color: white;
-    }
-    .btn-save,
-    .btn-cancel {
       padding: 0.5rem 1rem;
-      border-radius: 4px;
+      border: none;
+      border-radius: 0.3rem;
+      cursor: pointer;
     }
-    .tecnico-table {
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      overflow-x: auto;
+
+    .btn-cancel {
+      background-color: #e74c3c;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 0.3rem;
+      cursor: pointer;
     }
-    table {
+
+    .tecnico-table table {
       width: 100%;
       border-collapse: collapse;
     }
-    th, td {
-      padding: 1rem;
+
+    .tecnico-table th, .tecnico-table td {
+      border: 1px solid #ccc;
+      padding: 0.75rem;
       text-align: left;
-      border-bottom: 1px solid #ddd;
     }
-    th {
-      background: #f5f5f5;
+
+    .tecnico-table th {
+      background-color: #ecf0f1;
     }
+
     .actions {
       display: flex;
       gap: 0.5rem;
     }
-    .btn-edit {
-      color: #1a237e;
+
+    .btn-edit, .btn-delete {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.2rem;
     }
-    .btn-delete {
-      color: #dc3545;
+
+    .btn-edit i {
+      color: #f39c12;
     }
-    `]
+
+    .btn-delete i {
+      color: #c0392b;
+    }
+  `]
 })
 export class EmpleadoTecnicoComponent implements OnInit {
   tecnicos: Tecnico[] = [];
@@ -173,15 +231,15 @@ export class EmpleadoTecnicoComponent implements OnInit {
 
   constructor() {
     this.form = this.fb.group({
-      nombre: ["", [Validators.required]],
-      telefono: ["", [Validators.required]],
-      correoPersonal: ["", [Validators.required, Validators.email]],
-      fechaNacimiento: ["", [Validators.required]],
-      numeroDocumento: ["", [Validators.required]],
-      tipoDocumentoId: [null, [Validators.required]],
-      generoId: [null, [Validators.required]],
-      especialidad: ["", [Validators.required]],
-      estado: [true],
+      nombre: ["", Validators.required],
+      telefono: ["", Validators.required],
+      correo: ["", [Validators.required, Validators.email]],
+      fechaNacimiento: ["", Validators.required],
+      numeroDocumento: ["", Validators.required],
+      tipoDocumentoId: [null, Validators.required],
+      generoId: [null, Validators.required],
+      especialidad: ["", Validators.required],
+      estado: [true]
     });
   }
 
@@ -204,8 +262,15 @@ export class EmpleadoTecnicoComponent implements OnInit {
 
   create() {
     if (this.form.valid) {
-      const tecnicoData = this.form.value;
-      if (this.editingTecnico) {
+      const tecnicoData = {
+        ...this.form.value,
+        tipoDocumento: { id: this.form.value.tipoDocumentoId },
+        genero: { id: this.form.value.generoId },
+      };
+      delete tecnicoData.tipoDocumentoId;
+      delete tecnicoData.generoId;
+  
+      if (this.editingTecnico?.id) {
         this.tecnicoService.update(this.editingTecnico.id, tecnicoData).subscribe({
           next: () => {
             alert("Técnico actualizado con éxito");
@@ -232,6 +297,7 @@ export class EmpleadoTecnicoComponent implements OnInit {
       }
     }
   }
+  
 
   editTecnico(tecnico: Tecnico) {
     this.showForm = true;
@@ -239,24 +305,23 @@ export class EmpleadoTecnicoComponent implements OnInit {
     this.form.patchValue(tecnico);
   }
 
-  deleteTecnico(id: number) {
-    if (confirm("¿Estás seguro de eliminar este técnico?")) {
-      this.tecnicoService.delete(id).subscribe({
-        next: () => {
-          alert("Técnico eliminado con éxito");
-          this.loadTecnicos();
-        },
-        error: (err) => {
-          console.error("Error al eliminar:", err);
-          alert("Hubo un error al eliminar el técnico");
-        },
-      });
-    }
+  deleteTecnico(id?: number): void {
+    if (!id) return;
+    this.tecnicoService.delete(id).subscribe({
+      next: () => {
+        alert("Técnico eliminado con éxito");
+        this.loadTecnicos();
+      },
+      error: (err) => {
+        console.error("Error al eliminar:", err);
+        alert("Hubo un error al eliminar el técnico");
+      }
+    });
   }
 
   cancelForm() {
     this.showForm = false;
     this.editingTecnico = null;
-    this.form.reset();
+    this.form.reset({ estado: true });
   }
 }

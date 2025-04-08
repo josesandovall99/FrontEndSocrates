@@ -7,7 +7,7 @@ import { Tecnico } from '../models/tecnico.model';
   providedIn: 'root',
 })
 export class TecnicoService {
-  private apiUrl = 'api/v1/tecnicos';
+  private apiUrl = 'https://backendsocrates.onrender.com/api/v1/tecnicos';
 
   constructor(private http: HttpClient) {}
 

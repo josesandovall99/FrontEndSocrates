@@ -10,7 +10,7 @@ import { ServicioComponent } from './components/solicitud-servicio/solictud-serv
 
 export const routes: Routes = [
   // Solo el componente de login se carga para esta ruta
-  //{ path: 'login', component: LoginComponent },
+  { path: 'login', component: LoginComponent },
 
   // Rutas protegidas por AuthGuard
  
