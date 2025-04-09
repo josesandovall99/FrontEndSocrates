@@ -43,9 +43,9 @@ import { Cliente } from "src/app/models/cliente.model";
 
           <div class="form-group">
             <label for="tipoDocumento">Tipo identificación:</label>
-            <select id="tipoDocumento" formControlName="tipoDocumento" required class="form-control">
+            <select id="tipoDocumento" formControlName="tipoDocumento" required>
               <option value="">Seleccione una opción</option>
-              <option *ngFor="let tipo of tiposDocumento" [value]="tipo.valor" [selected]="form.get('tipoDocumento')?.value === tipo.valor">
+              <option *ngFor="let tipo of tiposDocumento" [value]="tipo.valor">
                 {{ tipo.nombre }}
               </option>
             </select>
@@ -53,9 +53,9 @@ import { Cliente } from "src/app/models/cliente.model";
 
           <div class="form-group">
             <label for="sexo">Género:</label>
-            <select id="sexo" formControlName="sexo" required class="form-control">
+            <select id="sexo" formControlName="sexo" required>
               <option value="">Seleccione una opción</option>
-              <option *ngFor="let gen of generos" [value]="gen.valor" [selected]="form.get('sexo')?.value === gen.valor">
+              <option *ngFor="let gen of generos" [value]="gen.valor">
                 {{ gen.nombre }}
               </option>
             </select>
@@ -64,6 +64,16 @@ import { Cliente } from "src/app/models/cliente.model";
           <div class="form-group">
             <label for="direccion">Dirección:</label>
             <input id="direccion" type="text" formControlName="direccion" required />
+          </div>
+
+          <div class="form-group">
+            <label for="tipoServicio">Tipo servicio:</label>
+            <input id="tipoServicio" type="text" formControlName="tipoServicio" required />
+          </div>
+
+          <div class="form-group">
+            <label for="fechaRegistro">Fecha registro:</label>
+            <input id="fechaRegistro" type="text" formControlName="fechaRegistro" readonly />
           </div>
 
           <div class="form-actions">
@@ -82,6 +92,8 @@ import { Cliente } from "src/app/models/cliente.model";
               <th>Número documento</th>
               <th>Teléfono</th>
               <th>Correo</th>
+              <th>Tipo servicio</th>
+              <th>Fecha Registro</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -92,6 +104,8 @@ import { Cliente } from "src/app/models/cliente.model";
               <td>{{ cliente.numeroDocumento }}</td>
               <td>{{ cliente.telefono }}</td>
               <td>{{ cliente.correo }}</td>
+              <td>{{ cliente.tipoServicio }}</td>
+              <td>{{ cliente.fechaRegistro }}</td>
               <td class="actions">
                 <button (click)="editCliente(cliente)" class="btn-edit">
                   <i class="fas fa-edit"></i>
@@ -108,123 +122,101 @@ import { Cliente } from "src/app/models/cliente.model";
   `,
   styles: [`
     .secretaria-management {
-      padding: 2rem;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 20px;
+      font-family: Arial, sans-serif;
     }
 
     .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 2rem;
-    }
-
-    .header h1 {
-      margin: 0;
-      font-size: 2rem;
-      color: #2c3e50;
     }
 
     .btn-add {
-      background-color: #3498db;
+      padding: 10px 20px;
+      background-color: #007bff;
       color: white;
-      padding: 0.5rem 1.2rem;
       border: none;
-      border-radius: 0.3rem;
       cursor: pointer;
-    }
-
-    .btn-add i {
-      margin-right: 0.5rem;
+      border-radius: 4px;
     }
 
     .secretaria-form {
-      margin-bottom: 2rem;
-      padding: 1.5rem;
-      border: 1px solid #ddd;
-      border-radius: 0.5rem;
-      background-color: #f9f9f9;
-    }
-
-    .secretaria-form h2 {
-      margin-bottom: 1rem;
-      color: #2c3e50;
+      margin-top: 20px;
+      background-color: #f8f9fa;
+      padding: 20px;
+      border-radius: 6px;
     }
 
     .form-group {
-      margin-bottom: 1rem;
+      margin-bottom: 15px;
     }
 
     .form-group label {
       display: block;
-      font-weight: bold;
-      margin-bottom: 0.3rem;
+      margin-bottom: 5px;
     }
 
-    .form-group input, .form-group select {
+    .form-group input,
+    .form-group select {
       width: 100%;
-      padding: 0.5rem;
+      padding: 8px;
+      border-radius: 4px;
       border: 1px solid #ccc;
-      border-radius: 0.3rem;
     }
 
     .form-actions {
-      margin-top: 1rem;
       display: flex;
-      gap: 1rem;
+      gap: 10px;
     }
 
     .btn-save {
-      background-color: #27ae60;
+      padding: 8px 16px;
+      background-color: #28a745;
       color: white;
-      padding: 0.5rem 1rem;
       border: none;
-      border-radius: 0.3rem;
       cursor: pointer;
+      border-radius: 4px;
     }
 
     .btn-cancel {
-      background-color: #e74c3c;
+      padding: 8px 16px;
+      background-color: #dc3545;
       color: white;
-      padding: 0.5rem 1rem;
       border: none;
-      border-radius: 0.3rem;
       cursor: pointer;
+      border-radius: 4px;
     }
 
-    .secretaria-table table {
+    .secretaria-table {
+      margin-top: 20px;
+    }
+
+    table {
       width: 100%;
       border-collapse: collapse;
     }
 
-    .secretaria-table th, .secretaria-table td {
-      border: 1px solid #ccc;
-      padding: 0.75rem;
+    th,
+    td {
+      border: 1px solid #dee2e6;
+      padding: 10px;
       text-align: left;
     }
 
-    .secretaria-table th {
-      background-color: #ecf0f1;
-    }
-
-    .actions {
-      display: flex;
-      gap: 0.5rem;
-    }
-
-    .btn-edit, .btn-delete {
+    .actions button {
+      margin-right: 5px;
       background: none;
       border: none;
       cursor: pointer;
-      font-size: 1.2rem;
     }
 
     .btn-edit i {
-      color: #f39c12;
+      color: #ffc107;
     }
 
     .btn-delete i {
-      color: #c0392b;
+      color: #dc3545;
     }
   `]
 })
@@ -256,6 +248,10 @@ export class clienteComponent implements OnInit {
       tipoDocumento: ["", Validators.required],
       sexo: ["", Validators.required],
       direccion: ["", Validators.required],
+      tipoServicio: ["", Validators.required],
+      fechaRegistro: [{ value: "", disabled: true }],
+      cargo: ["CLIENTE"],
+      estado: [true]
     });
   }
 
@@ -276,16 +272,25 @@ export class clienteComponent implements OnInit {
       error: (err) => console.error("Error al cargar clientes:", err),
     });
   }
-  
+
   showAddForm() {
     this.showForm = true;
     this.editingCliente = null;
     this.form.reset();
+    const fechaActual = new Date().toISOString().split("T")[0]; // yyyy-mm-dd
+    this.form.patchValue({
+      cargo: 'CLIENTE',
+      estado: true,
+      fechaRegistro: fechaActual
+    });
   }
 
   create() {
     if (this.form.valid) {
-      const clienteData = this.form.value;
+      const clienteData = {
+        ...this.form.getRawValue(), // incluye los campos deshabilitados como fechaRegistro
+        cargo: 'CLIENTE'
+      };
 
       if (this.editingCliente?.id) {
         this.clienteService.update(this.editingCliente.id, clienteData).subscribe({

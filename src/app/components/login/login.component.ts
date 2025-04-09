@@ -1,10 +1,10 @@
-  import { Component } from '@angular/core';
-  import { CommonModule } from '@angular/common';
-  import { FormsModule } from '@angular/forms';
-  import { Router } from '@angular/router';
-  import { AuthService } from 'src/app/services/auth.service';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
-  @Component({
+@Component({
     selector: 'app-login',
     standalone: true,
     imports: [CommonModule, FormsModule],
@@ -249,75 +249,75 @@ body {
     }
 }
     `]
-  })
-  export class LoginComponent {
+})
+export class LoginComponent {
     numeroDocumento: string = '123';
     password: string = '123';
     message: string = '';
-  
-    constructor(private authService: AuthService, private router: Router) {}
-  
-    login() {//LOGIN CON 123
-      // Verifica si el username y el password son "123"
-      if (this.numeroDocumento === '123' && this.password === '123') {
-        // Simula una respuesta exitosa del servidor
-        const response = {
-          message: 'Login successful',
-          userType: 'admin'  // Puedes cambiar a 'student' o 'teacher' según necesites
-        };
-    
-        localStorage.setItem('authToken', 'true'); // Guarda el token
-        localStorage.setItem('userType', response.userType); // Guarda el tipo de usuario
-    
-        // Actualiza el estado de autenticación en AuthService
-        this.authService.updateAuthStatus(true);
-    
-        // Redirige al dashboard adecuado según el tipo de usuario
-        if (response.userType === 'admin') {
-          this.router.navigate(['/empleado-dashboard']);
-        } else if (response.userType === 'Secretaria') {
-          this.router.navigate(['/solicitud-servicio']);
-        }
-      } else {
-        // Si las credenciales son incorrectas
-        this.message = 'Credenciales ERRONEAS';
-      }
-    }
 
+    constructor(private authService: AuthService, private router: Router) { }
     /*
+      login() {//LOGIN CON 123
+        // Verifica si el username y el password son "123"
+        if (this.numeroDocumento === '123' && this.password === '123') {
+          // Simula una respuesta exitosa del servidor
+          const response = {
+            message: 'Login successful',
+            userType: 'admin'  // Puedes cambiar a 'student' o 'teacher' según necesites
+          };
+      
+          localStorage.setItem('authToken', 'true'); // Guarda el token
+          localStorage.setItem('userType', response.userType); // Guarda el tipo de usuario
+      
+          // Actualiza el estado de autenticación en AuthService
+          this.authService.updateAuthStatus(true);
+      
+          // Redirige al dashboard adecuado según el tipo de usuario
+          if (response.userType === 'admin') {
+            this.router.navigate(['/empleado-dashboard']);
+          } else if (response.userType === 'Secretaria') {
+            this.router.navigate(['/solicitud-servicio']);
+          }
+        } else {
+          // Si las credenciales son incorrectas
+          this.message = 'Credenciales ERRONEAS';
+        }
+      }
+  */
+
     //LOGIN CON TIPOS DE CARGO
     login() {
         this.authService.login(this.numeroDocumento, this.password).subscribe(
-          response => {
-            if (response.message === 'Login successful') {
-              localStorage.setItem('authToken', 'true'); // Guarda el token
-              localStorage.setItem('userType', response.userType); // Guarda el tipo de usuario
-      
-              // Actualiza el estado de autenticación en AuthService
-              this.authService.updateAuthStatus(true);
-      
-              // Redirige al dashboard adecuado según el tipo de usuario
-              if (response.userType === 'administrador') {
-                this.router.navigate(['/empleado-dashboard']);
-              } else if (response.userType === 'secretaria') {
-                this.router.navigate(['/secretaria-dashboard']);
-              } 
-            } else {
-              this.message = 'Credenciales ERRONEAS';
+            response => {
+                if (response.message === 'Login successful') {
+                    localStorage.setItem('authToken', 'true'); // Guarda el token
+                    localStorage.setItem('userType', response.userType); // Guarda el tipo de usuario
+
+                    // Actualiza el estado de autenticación en AuthService
+                    this.authService.updateAuthStatus(true);
+
+                    // Redirige al dashboard adecuado según el tipo de usuario
+                    if (response.userType === 'administrador') {
+                        this.router.navigate(['/empleado-dashboard']);
+                    } else if (response.userType === 'secretaria') {
+                        this.router.navigate(['/secretaria-dashboard']);
+                    }
+                } else {
+                    this.message = 'Credenciales ERRONEAS';
+                }
+            },
+            error => {
+                console.error('Error:', error);
+                this.message = 'Error en el servidor o credenciales incorrectas.';
             }
-          },
-          error => {
-            console.error('Error:', error);
-            this.message = 'Error en el servidor o credenciales incorrectas.';
-          }
         );
-      }
-    */
+    }
+
 
     isPasswordVisible: boolean = false;
 
-  togglePassword(): void {
-    this.isPasswordVisible = !this.isPasswordVisible;
-  }
-    
-  }
+    togglePassword(): void {
+        this.isPasswordVisible = !this.isPasswordVisible;
+    }
+
+}
