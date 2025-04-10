@@ -19,7 +19,7 @@ export const routes: Routes = [
   {path: 'empleado-secretaria' , component: EmpleadoSecretariaComponent, canActivate:[AuthGuard], data: {userType: 'admin'}},
   {path: 'empleado-tecnico' , component: EmpleadoTecnicoComponent, canActivate:[AuthGuard], data: {userType: 'admin'}},
   {path: 'tipo-plan', component:TipoPlanComponent},
-  {path: 'solicitud-servicio' , component: ServicioComponent, canActivate:[AuthGuard], data: {userType: 'secretaria'}},
+  {path: 'solicitudservicio' , component: ServicioComponent},
   {path: 'clientes' , component: clienteComponent,canActivate:[AuthGuard], data: {userType: 'admin'}},
 
   //{path: 'solicitud-servicio' , component: SolicitudServicioComponent, canActivate:[AuthGuard], data: {userType: 'secretaria'}},
