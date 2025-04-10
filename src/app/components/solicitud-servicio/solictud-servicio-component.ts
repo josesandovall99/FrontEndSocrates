@@ -234,10 +234,14 @@ export class ServicioComponent implements OnInit {
 
   loadTipoPlanes() {
     this.servicioService.listTipoPlanes().subscribe({
-      next: (tipoPlanes) => (this.tipoPlanes = tipoPlanes),
+      next: (tipoPlanes) => {
+        this.tipoPlanes = tipoPlanes;
+        console.log("Tipos de planes cargados:", this.tipoPlanes); // Debug para verificar
+      },
       error: (err) => console.error("Error al cargar tipos de plan:", err)
     });
   }
+  
 
   loadTecnicos() {
     this.servicioService.listTecnicos().subscribe({
@@ -300,17 +304,18 @@ export class ServicioComponent implements OnInit {
     this.showForm = true;
     this.editingServicio = servicio;
   
-    // Asignar los valores correctos al formulario con el ID correspondiente
+    // Asignar los valores con el ID correcto
     this.form.patchValue({
       fechaServicio: servicio.fechaServicio,
       descripcion: servicio.descripcion,
       horaServicio: servicio.horaServicio,
       estado: servicio.estado,
-      tipoPlan: servicio.tipoPlan.id, // ID del Tipo de Plan
-      tecnico: servicio.tecnico.id,   // ID del Técnico
-      cliente: servicio.cliente?.id   // ID del Cliente (puede ser null)
+      tipoPlan: servicio.tipoPlan?.id,  // Asegurar que se asigna el ID del tipo de plan
+      tecnico: servicio.tecnico.id,
+      cliente: servicio.cliente?.id
     });
   }
+  
   
   deleteServicio(id: number) {
     if (confirm("¿Estás seguro de eliminar este servicio?")) {
