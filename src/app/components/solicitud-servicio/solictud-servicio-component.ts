@@ -72,6 +72,47 @@ import { TipoPlanService } from 'src/app/services/TipoPlan.Service';
           </div>
         </form>
       </div>
+
+      <!-- Tabla para visualizar todos los datos -->
+      <div class="servicio-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Descripción</th>
+              <th>Hora del Servicio</th>
+              <th>Estado</th>
+              <th>Tipo de Plan</th>
+              <th>Precio</th>
+              <th>Técnico</th>
+              <th>Cliente</th>
+              <th>Identificación</th>
+              <th>Dirección</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let servicio of servicios">
+              <td>{{ servicio.descripcion }}</td>
+              <td>{{ servicio.horaServicio }}</td>
+              <td>{{ servicio.estado }}</td>
+              <td>{{ servicio.tipoPlan.nombre }}</td>
+              <td>{{ servicio.tipoPlan.precio }}</td>
+              <td>{{ servicio.tecnico.nombre }}</td>
+              <td>{{ servicio.cliente?.nombre }}</td>
+              <td>{{ servicio.cliente?.numeroDocumento }}</td>
+              <td>{{ servicio.cliente?.direccion }}</td>
+              <td class="actions">
+                <button (click)="editServicio(servicio)" class="btn-edit">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button (click)="deleteServicio(servicio.id)" class="btn-delete">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   `,
   styles: [`
