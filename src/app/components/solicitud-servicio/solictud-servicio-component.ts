@@ -6,6 +6,7 @@ import { Servicio } from 'src/app/models/servicio.model';
 import { TipoPlan } from 'src/app/models/TipoPlan';
 import { Tecnico } from 'src/app/models/tecnico.model';
 import { Cliente } from 'src/app/models/cliente.model'; // Comentado porque aún no existe
+import { TipoPlanService } from 'src/app/services/TipoPlan.Service';
 
 @Component({
   selector: 'app-servicio-management',
@@ -70,46 +71,6 @@ import { Cliente } from 'src/app/models/cliente.model'; // Comentado porque aún
             <button type="button" class="btn-cancel" (click)="cancelForm()">Cancelar</button>
           </div>
         </form>
-      </div>
-
-      <div class="servicio-table">
-        <table>
-          <thead>
-            <tr>
-              <th>Fecha del Servicio</th>
-              <th>Descripción</th>
-              <th>Hora del Servicio</th>
-              <th>Estado</th>
-              <th>Tipo de Plan</th>
-              <th>Técnico</th>
-              <th>Cliente</th>
-              <th>Identificación</th>
-              <th>dirección</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let servicio of servicios">
-              <td>{{ servicio.fechaServicio | date }}</td>
-              <td>{{ servicio.descripcion }}</td>
-              <td>{{ servicio.horaServicio }}</td>
-              <td>{{ servicio.estado }}</td>
-              <td>{{ servicio.tipoPlan.nombre }}</td>
-              <td>{{ servicio.tecnico.nombre }}</td>
-              <td>{{ servicio.cliente?.nombre }}</td>
-              <td>{{ servicio.cliente?.numeroDocumento }}</td>
-              <td>{{ servicio.cliente?.direccion }}</td>
-              <td class="actions">
-                <button (click)="editServicio(servicio)" class="btn-edit">
-                  <i class="fas fa-edit"></i>
-                </button>
-                <button (click)="deleteServicio(servicio.id)" class="btn-delete">
-                  <i class="fas fa-trash"></i>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
       </div>
     </div>
   `,
@@ -208,6 +169,7 @@ export class ServicioComponent implements OnInit {
   form: FormGroup;
 
   private servicioService = inject(ServicioService);
+  private tipoPlanService = inject(TipoPlanService);
   private fb = inject(FormBuilder);
 
   constructor() {
@@ -216,8 +178,8 @@ export class ServicioComponent implements OnInit {
       descripcion: ["", [Validators.required]],
       horaServicio: ["", [Validators.required]],
       estado: ["", [Validators.required]],
-      tipoPlan: [null, [Validators.required]],
-      tecnico: [null, [Validators.required]],
+      tipoPlan: [null, [Validators.required]], 
+      tecnico: [null, [Validators.required]], 
       cliente: [null]
     });
   }
@@ -237,10 +199,10 @@ export class ServicioComponent implements OnInit {
   }
 
   loadTipoPlanes() {
-    this.servicioService.listTipoPlanes().subscribe({
+    this.tipoPlanService.list().subscribe({
       next: (tipoPlanes) => {
         this.tipoPlanes = tipoPlanes;
-        console.log("Tipos de planes cargados:", this.tipoPlanes); // Debug para verificar
+        console.log("Tipos de planes cargados:", this.tipoPlanes);
       },
       error: (err) => console.error("Error al cargar tipos de plan:", err)
     });
@@ -307,18 +269,18 @@ export class ServicioComponent implements OnInit {
   editServicio(servicio: Servicio) {
     this.showForm = true;
     this.editingServicio = servicio;
-  
-    // Asignar los valores con el ID correcto
+
     this.form.patchValue({
       fechaServicio: servicio.fechaServicio,
       descripcion: servicio.descripcion,
       horaServicio: servicio.horaServicio,
       estado: servicio.estado,
-      tipoPlan: servicio.tipoPlan?.id,  // Asegurar que se asigna el ID del tipo de plan
+      tipoPlan: servicio.tipoPlan?.id,  
       tecnico: servicio.tecnico.id,
       cliente: servicio.cliente?.id
     });
   }
+
   
   
   deleteServicio(id: number) {
