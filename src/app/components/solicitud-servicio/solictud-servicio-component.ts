@@ -83,6 +83,8 @@ import { Cliente } from 'src/app/models/cliente.model'; // Comentado porque aún
               <th>Tipo de Plan</th>
               <th>Técnico</th>
               <th>Cliente</th>
+              <th>Identificación</th>
+              <th>dirección</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -95,6 +97,8 @@ import { Cliente } from 'src/app/models/cliente.model'; // Comentado porque aún
               <td>{{ servicio.tipoPlan.nombre }}</td>
               <td>{{ servicio.tecnico.nombre }}</td>
               <td>{{ servicio.cliente?.nombre }}</td>
+              <td>{{ servicio.cliente?.numeroDocumento }}</td>
+              <td>{{ servicio.cliente?.direccion }}</td>
               <td class="actions">
                 <button (click)="editServicio(servicio)" class="btn-edit">
                   <i class="fas fa-edit"></i>
