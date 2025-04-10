@@ -1,6 +1,6 @@
 import { TipoPlan } from './TipoPlan';
 import { Tecnico } from './tecnico.model';
-// import { Cliente } from './cliente.model'; // Comentado porque aún no existe
+import { Cliente } from './cliente.model'; // Comentado porque aún no existe
 
 export interface Servicio {
   id: number;
@@ -10,5 +10,5 @@ export interface Servicio {
   estado: string;
   tipoPlan: TipoPlan;
   tecnico: Tecnico;
-  // cliente: Cliente; // Comentado porque aún no existe
+  cliente: Cliente; // Comentado porque aún no existe
 }

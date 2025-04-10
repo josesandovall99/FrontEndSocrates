@@ -5,7 +5,7 @@ import { ServicioService } from 'src/app/services/servicio.service';
 import { Servicio } from 'src/app/models/servicio.model';
 import { TipoPlan } from 'src/app/models/TipoPlan';
 import { Tecnico } from 'src/app/models/tecnico.model';
-// import { Cliente } from 'src/app/models/cliente.model'; // Comentado porque aún no existe
+import { Cliente } from 'src/app/models/cliente.model'; // Comentado porque aún no existe
 
 @Component({
   selector: 'app-servicio-management',
@@ -58,14 +58,12 @@ import { Tecnico } from 'src/app/models/tecnico.model';
             </select>
           </div>
 
-          <!--
           <div class="form-group">
             <label for="cliente">Cliente:</label>
             <select id="cliente" formControlName="cliente">
               <option *ngFor="let cliente of clientes" [value]="cliente.id">{{ cliente.nombre }}</option>
             </select>
           </div>
-          -->
 
           <div class="form-actions">
             <button type="submit" class="btn-save" [disabled]="form.invalid">Guardar</button>
@@ -84,7 +82,7 @@ import { Tecnico } from 'src/app/models/tecnico.model';
               <th>Estado</th>
               <th>Tipo de Plan</th>
               <th>Técnico</th>
-              <!-- <th>Cliente</th> -->
+              <th>Cliente</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -96,7 +94,7 @@ import { Tecnico } from 'src/app/models/tecnico.model';
               <td>{{ servicio.estado }}</td>
               <td>{{ servicio.tipoPlan.nombre }}</td>
               <td>{{ servicio.tecnico.nombre }}</td>
-              <!-- <td>{{ servicio.cliente?.nombre }}</td> -->
+              <td>{{ servicio.cliente?.nombre }}</td>
               <td class="actions">
                 <button (click)="editServicio(servicio)" class="btn-edit">
                   <i class="fas fa-edit"></i>
@@ -200,7 +198,7 @@ export class ServicioComponent implements OnInit {
   servicios: Servicio[] = [];
   tipoPlanes: TipoPlan[] = [];
   tecnicos: Tecnico[] = [];
-  // clientes: Cliente[] = []; // Comentado porque aún no existe
+  clientes: Cliente[] = []; // Comentado porque aún no existe
   showForm = false;
   editingServicio: Servicio | null = null;
   form: FormGroup;
@@ -216,7 +214,7 @@ export class ServicioComponent implements OnInit {
       estado: ["", [Validators.required]],
       tipoPlan: [null, [Validators.required]],
       tecnico: [null, [Validators.required]],
-      // cliente: [null], // Comentado porque aún no existe
+      cliente: [null]
     });
   }
 
@@ -224,37 +222,52 @@ export class ServicioComponent implements OnInit {
     this.loadServicios();
     this.loadTipoPlanes();
     this.loadTecnicos();
-    // this.loadClientes(); // Comentado porque aún no existe
+    this.loadClientes(); // Comentado porque aún no existe
   }
 
   loadServicios() {
     this.servicioService.list().subscribe({
       next: (servicios) => (this.servicios = servicios),
-      error: (err) => console.error("Error al cargar servicios:", err),
+      error: (err) => console.error("Error al cargar servicios:", err)
     });
   }
 
   loadTipoPlanes() {
-    // Aquí deberías llamar al servicio correspondiente para cargar los tipos de plan
+    this.servicioService.listTipoPlanes().subscribe({
+      next: (tipoPlanes) => (this.tipoPlanes = tipoPlanes),
+      error: (err) => console.error("Error al cargar tipos de plan:", err)
+    });
   }
 
   loadTecnicos() {
-    // Aquí deberías llamar al servicio correspondiente para cargar los técnicos
+    this.servicioService.listTecnicos().subscribe({
+      next: (tecnicos) => (this.tecnicos = tecnicos),
+      error: (err) => console.error("Error al cargar técnicos:", err)
+    });
   }
 
-  // loadClientes() {
-  //   // Aquí deberías llamar al servicio correspondiente para cargar los clientes
-  // }
-
+  loadClientes() {
+    this.servicioService.listClientes().subscribe({
+      next: (clientes) => (this.clientes = clientes),
+      error: (err) => console.error("Error al cargar clientes:", err)
+    });
+  }
   showAddForm() {
     this.showForm = true;
     this.editingServicio = null;
     this.form.reset();
   }
-
+  
   create() {
     if (this.form.valid) {
-      const servicioData = this.form.value;
+      // Extraer IDs correctamente para ser enviados al backend
+      const servicioData = {
+        ...this.form.value,
+        tipoPlan: this.form.value.tipoPlan, // Enviamos solo el ID
+        tecnico: this.form.value.tecnico,   // Enviamos solo el ID
+        cliente: this.form.value.cliente    // Enviamos solo el ID
+      };
+  
       if (this.editingServicio) {
         this.servicioService.update(this.editingServicio.id, servicioData).subscribe({
           next: () => {
@@ -282,13 +295,23 @@ export class ServicioComponent implements OnInit {
       }
     }
   }
-
+  
   editServicio(servicio: Servicio) {
     this.showForm = true;
     this.editingServicio = servicio;
-    this.form.patchValue(servicio);
+  
+    // Asignar los valores correctos al formulario con el ID correspondiente
+    this.form.patchValue({
+      fechaServicio: servicio.fechaServicio,
+      descripcion: servicio.descripcion,
+      horaServicio: servicio.horaServicio,
+      estado: servicio.estado,
+      tipoPlan: servicio.tipoPlan.id, // ID del Tipo de Plan
+      tecnico: servicio.tecnico.id,   // ID del Técnico
+      cliente: servicio.cliente?.id   // ID del Cliente (puede ser null)
+    });
   }
-
+  
   deleteServicio(id: number) {
     if (confirm("¿Estás seguro de eliminar este servicio?")) {
       this.servicioService.delete(id).subscribe({
@@ -303,7 +326,7 @@ export class ServicioComponent implements OnInit {
       });
     }
   }
-
+  
   cancelForm() {
     this.showForm = false;
     this.editingServicio = null;
