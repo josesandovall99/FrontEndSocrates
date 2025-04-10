@@ -54,14 +54,14 @@ import { Cliente } from 'src/app/models/cliente.model'; // Comentado porque aún
           <div class="form-group">
             <label for="tecnico">Técnico:</label>
             <select id="tecnico" formControlName="tecnico" required>
-              <option *ngFor="let tecnico of tecnicos" [value]="tecnico.id">{{ tecnico.nombre }}</option>
+              <option *ngFor="let tecnico of tecnicos" [value]="tecnico.id">{{ tecnico.nombre +" - " +tecnico.numeroDocumento}}</option>
             </select>
           </div>
 
           <div class="form-group">
             <label for="cliente">Cliente:</label>
             <select id="cliente" formControlName="cliente">
-              <option *ngFor="let cliente of clientes" [value]="cliente.id">{{ cliente.nombre }}</option>
+              <option *ngFor="let cliente of clientes" [value]="cliente.id">{{ cliente.nombre +" - "+cliente.numeroDocumento}}</option>
             </select>
           </div>
 
