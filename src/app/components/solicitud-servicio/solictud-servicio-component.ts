@@ -27,7 +27,7 @@ import { TipoPlanService } from 'src/app/services/TipoPlan.Service';
         <form [formGroup]="form" (ngSubmit)="create()">
           <div class="form-group">
             <label for="fechaServicio">Fecha del Servicio:</label>
-            <input id="fechaServicio" formControlName="fechaServicio" required type="date" />
+            <input id="fechaServicio" formControlName="fechaServicio" required type="datetime" />
           </div>
 
           <div class="form-group">
@@ -227,7 +227,6 @@ export class ServicioComponent implements OnInit {
       cliente: [null]
     });
   }
-  
 
   ngOnInit(): void {
     this.loadServicios();
@@ -275,48 +274,47 @@ export class ServicioComponent implements OnInit {
     this.form.reset();
   }
 
-
   create() {
-    if (this.form.valid) {
-      const hora12 = this.form.value.horaServicio; // Hora en formato 12 horas (HH:mm AM/PM)
-      const hora24 = convertirHoraAFormatoCorrecto(hora12); // Conversión a HH:mm:ss
-  
-      const servicioData = {
-        ...this.form.value,
-        horaServicio: hora24, // Ahora la hora está en formato correcto
-        tipoPlan: this.form.value.tipoPlan,
-        tecnico: this.form.value.tecnico,
-        cliente: this.form.value.cliente
-      };
-  
-      if (this.editingServicio) {
-        this.servicioService.update(this.editingServicio.id, servicioData).subscribe({
-          next: () => {
-            alert("Servicio actualizado con éxito");
-            this.loadServicios();
-            this.showForm = false;
-          },
-          error: (err) => {
-            console.error("Error al actualizar:", err);
-            alert("Hubo un error al actualizar el servicio");
-          }
-        });
-      } else {
-        this.servicioService.create(servicioData).subscribe({
-          next: () => {
-            alert("Servicio creado con éxito");
-            this.loadServicios();
-            this.showForm = false;
-          },
-          error: (err) => {
-            console.error("Error al crear:", err);
-            alert("Hubo un error al crear el servicio");
-          }
-        });
-      }
+  if (this.form.valid) {
+    const hora12 = this.form.value.horaServicio;
+    const hora24 = this.convertirHoraAFormatoCorrecto(hora12);
+
+    const servicioData = {
+      ...this.form.value,
+      horaServicio: hora24,
+      tipoPlan: { id: this.form.value.tipoPlan },
+      tecnico: { id: this.form.value.tecnico },
+      cliente: { id: this.form.value.cliente }
+    };
+
+    if (this.editingServicio) {
+      this.servicioService.update(this.editingServicio.id, servicioData).subscribe({
+        next: () => {
+          alert("Servicio actualizado con éxito");
+          this.loadServicios();
+          this.showForm = false;
+        },
+        error: (err) => {
+          console.error("Error al actualizar:", err);
+          alert("Hubo un error al actualizar el servicio");
+        }
+      });
+    } else {
+      this.servicioService.create(servicioData).subscribe({
+        next: () => {
+          alert("Servicio creado con éxito");
+          this.loadServicios();
+          this.showForm = false;
+        },
+        error: (err) => {
+          console.error("Error al crear:", err);
+          alert("Hubo un error al crear el servicio");
+        }
+      });
     }
   }
-  
+}
+
 
   editServicio(servicio: Servicio) {
     this.showForm = true;
@@ -325,11 +323,11 @@ export class ServicioComponent implements OnInit {
     this.form.patchValue({
       fechaServicio: servicio.fechaServicio,
       descripcion: servicio.descripcion,
-      horaServicio: servicio.horaServicio,
+      horaServicio: servicio.horaServicio?.substring(0, 5), // HH:mm
       estado: servicio.estado,
-      tipoPlan: servicio.tipoPlan.id,
-      tecnico: servicio.tecnico.id,
-      cliente: servicio.cliente?.id ?? null
+      tipoPlan: servicio.tipoPlan?.id,
+      tecnico: servicio.tecnico?.id,
+      cliente: servicio.cliente?.id
     });
   }
 
@@ -337,32 +335,26 @@ export class ServicioComponent implements OnInit {
     if (confirm("¿Estás seguro de que deseas eliminar este servicio?")) {
       this.servicioService.delete(id).subscribe({
         next: () => {
-          alert("Servicio eliminado");
+          alert("Servicio eliminado con éxito");
           this.loadServicios();
         },
         error: (err) => {
           console.error("Error al eliminar:", err);
-          alert("No se pudo eliminar el servicio");
+          alert("Hubo un error al eliminar el servicio");
         }
       });
     }
   }
 
   cancelForm() {
-    this.showForm = false;
     this.form.reset();
+    this.showForm = false;
+    this.editingServicio = null;
   }
-}
 
-function convertirHoraAFormatoCorrecto(hora12: string): string {
-  const [time, modifier] = hora12.split(' ');
-  let [hours, minutes] = time.split(':').map(Number);
+  convertirHoraAFormatoCorrecto(hora: string): string {
+    if (!hora) return '';
+    return hora.length === 5 ? `${hora}:00` : hora;
+  }
   
-  if (modifier === 'PM' && hours !== 12) {
-    hours += 12;
-  } else if (modifier === 'AM' && hours === 12) {
-    hours = 0;
-  }
-
-  return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00`;
 }
