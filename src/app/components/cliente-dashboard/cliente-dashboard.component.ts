@@ -277,13 +277,19 @@ export class clienteComponent implements OnInit {
     this.showForm = true;
     this.editingCliente = null;
     this.form.reset();
-    const fechaActual = new Date().toISOString().split("T")[0]; // yyyy-mm-dd
+    const hoy = new Date();
+    const dia = String(hoy.getDate()).padStart(2, '0');
+    const mes = String(hoy.getMonth() + 1).padStart(2, '0');
+    const anio = hoy.getFullYear();
+    const fechaFormateada = `${dia}/${mes}/${anio}`; // formato: dd/mm/yyyy
+  
     this.form.patchValue({
       cargo: 'CLIENTE',
       estado: true,
-      fechaRegistro: fechaActual
+      fechaRegistro: fechaFormateada
     });
   }
+  
 
   create() {
     if (this.form.valid) {

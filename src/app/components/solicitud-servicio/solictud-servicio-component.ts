@@ -79,6 +79,7 @@ import { TipoPlanService } from 'src/app/services/TipoPlan.Service';
           <thead>
             <tr>
               <th>Descripción</th>
+              <th>fecha del Servicio</th>
               <th>Hora del Servicio</th>
               <th>Estado</th>
               <th>Tipo de Plan</th>
@@ -87,12 +88,15 @@ import { TipoPlanService } from 'src/app/services/TipoPlan.Service';
               <th>Cliente</th>
               <th>Identificación</th>
               <th>Dirección</th>
+              
               <th>Acciones</th>
+              
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let servicio of servicios">
               <td>{{ servicio.descripcion }}</td>
+              <td>{{ servicio.fechaServicio }}</td>
               <td>{{ servicio.horaServicio }}</td>
               <td>{{ servicio.estado }}</td>
               <td>{{ servicio.tipoPlan.nombre }}</td>
@@ -204,7 +208,7 @@ export class ServicioComponent implements OnInit {
   servicios: Servicio[] = [];
   tipoPlanes: TipoPlan[] = [];
   tecnicos: Tecnico[] = [];
-  clientes: Cliente[] = []; // Comentado porque aún no existe
+  clientes: Cliente[] = [];
   showForm = false;
   editingServicio: Servicio | null = null;
   form: FormGroup;
@@ -219,8 +223,8 @@ export class ServicioComponent implements OnInit {
       descripcion: ["", [Validators.required]],
       horaServicio: ["", [Validators.required]],
       estado: ["", [Validators.required]],
-      tipoPlan: [null, [Validators.required]], 
-      tecnico: [null, [Validators.required]], 
+      tipoPlan: [null, [Validators.required]],
+      tecnico: [null, [Validators.required]],
       cliente: [null]
     });
   }
@@ -229,7 +233,7 @@ export class ServicioComponent implements OnInit {
     this.loadServicios();
     this.loadTipoPlanes();
     this.loadTecnicos();
-    this.loadClientes(); // Comentado porque aún no existe
+    this.loadClientes();
   }
 
   loadServicios() {
@@ -248,7 +252,6 @@ export class ServicioComponent implements OnInit {
       error: (err) => console.error("Error al cargar tipos de plan:", err)
     });
   }
-  
 
   loadTecnicos() {
     this.servicioService.listTecnicos().subscribe({
@@ -259,26 +262,28 @@ export class ServicioComponent implements OnInit {
 
   loadClientes() {
     this.servicioService.listClientes().subscribe({
-      next: (clientes) => (this.clientes = clientes),
+      next: (clientes) => {
+        this.clientes = clientes.filter(c => c.cargo?.toLowerCase() === 'cliente');
+      },
       error: (err) => console.error("Error al cargar clientes:", err)
     });
   }
+
   showAddForm() {
     this.showForm = true;
     this.editingServicio = null;
     this.form.reset();
   }
-  
+
   create() {
     if (this.form.valid) {
-      // Extraer IDs correctamente para ser enviados al backend
       const servicioData = {
         ...this.form.value,
-        tipoPlan: this.form.value.tipoPlan, // Enviamos solo el ID
-        tecnico: this.form.value.tecnico,   // Enviamos solo el ID
-        cliente: this.form.value.cliente    // Enviamos solo el ID
+        tipoPlan: this.form.value.tipoPlan,
+        tecnico: this.form.value.tecnico,
+        cliente: this.form.value.cliente
       };
-  
+
       if (this.editingServicio) {
         this.servicioService.update(this.editingServicio.id, servicioData).subscribe({
           next: () => {
@@ -306,7 +311,7 @@ export class ServicioComponent implements OnInit {
       }
     }
   }
-  
+
   editServicio(servicio: Servicio) {
     this.showForm = true;
     this.editingServicio = servicio;
@@ -316,32 +321,29 @@ export class ServicioComponent implements OnInit {
       descripcion: servicio.descripcion,
       horaServicio: servicio.horaServicio,
       estado: servicio.estado,
-      tipoPlan: servicio.tipoPlan?.id,  
+      tipoPlan: servicio.tipoPlan.id,
       tecnico: servicio.tecnico.id,
-      cliente: servicio.cliente?.id
+      cliente: servicio.cliente?.id ?? null
     });
   }
 
-  
-  
   deleteServicio(id: number) {
-    if (confirm("¿Estás seguro de eliminar este servicio?")) {
+    if (confirm("¿Estás seguro de que deseas eliminar este servicio?")) {
       this.servicioService.delete(id).subscribe({
         next: () => {
-          alert("Servicio eliminado con éxito");
+          alert("Servicio eliminado");
           this.loadServicios();
         },
         error: (err) => {
           console.error("Error al eliminar:", err);
-          alert("Hubo un error al eliminar el servicio");
-        },
+          alert("No se pudo eliminar el servicio");
+        }
       });
     }
   }
-  
+
   cancelForm() {
     this.showForm = false;
-    this.editingServicio = null;
     this.form.reset();
   }
 }
