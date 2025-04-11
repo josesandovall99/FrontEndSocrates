@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 
 interface StatCard {
   icon: string;
-  count: number;
   label: string;
   route: string; 
 }
@@ -22,7 +21,6 @@ interface StatCard {
         <div *ngFor="let stat of stats" class="stat-card" (click)="navigate(stat)">
           <i class="fas {{ stat.icon }}"></i>
           <div class="stat-info">
-            <h3>{{ stat.count }}</h3>
             <p>{{ stat.label }}</p>
           </div>
         </div>
@@ -47,40 +45,31 @@ interface StatCard {
       display: flex;
       align-items: center;
       gap: 1rem;
-      cursor: pointer; /* Hacer toda la tarjeta clicable */
-      transition: background-color 0.3s ease; /* Agregar transición */
+      cursor: pointer;
+      transition: background-color 0.3s ease;
     }
     .stat-card:hover {
-      background-color: #f0f0f0; /* Efecto al hacer hover sobre la tarjeta */
+      background-color: #f0f0f0;
     }
     .stat-card i {
       font-size: 2rem;
       color: #1a237e;
     }
-    .stat-info h3 {
-      margin: 0;
-      font-size: 1.5rem;
-      color: #1a237e;
-    }
     .stat-info p {
-      margin: 0.5rem 0 0;
+      margin: 0;
+      font-size: 1.2rem;
       color: #666;
     }
   `]
 })
 export class EmpleadoDashboard {
   stats: StatCard[] = [
-    { icon: 'fa-user-nurse', count: 298, label: 'Gestionar Secretaria', route: '/empleado-secretaria' },
-    { icon: 'fa-hard-hat', count: 56, label: 'Gestionar Técnico', route: '/empleado-tecnico' },
+    { icon: 'fa-user-nurse', label: 'Gestionar Secretaria', route: '/empleado-secretaria' },
+    { icon: 'fa-hard-hat', label: 'Gestionar Técnico', route: '/empleado-tecnico' },
   ];
-  
-  
-  
-  
 
   constructor(private router: Router) {}
 
-  // Método de navegación, redirige según la ruta asociada a cada tarjeta
   navigate(stat: StatCard) {
     this.router.navigate([stat.route]);
   }
