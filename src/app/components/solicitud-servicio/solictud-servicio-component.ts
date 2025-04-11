@@ -227,6 +227,7 @@ export class ServicioComponent implements OnInit {
       cliente: [null]
     });
   }
+  
 
   ngOnInit(): void {
     this.loadServicios();
@@ -274,15 +275,20 @@ export class ServicioComponent implements OnInit {
     this.form.reset();
   }
 
+
   create() {
     if (this.form.valid) {
+      const hora12 = this.form.value.horaServicio; // Hora en formato 12 horas (HH:mm AM/PM)
+      const hora24 = convertirHoraAFormatoCorrecto(hora12); // Conversión a HH:mm:ss
+  
       const servicioData = {
         ...this.form.value,
+        horaServicio: hora24, // Ahora la hora está en formato correcto
         tipoPlan: this.form.value.tipoPlan,
         tecnico: this.form.value.tecnico,
         cliente: this.form.value.cliente
       };
-
+  
       if (this.editingServicio) {
         this.servicioService.update(this.editingServicio.id, servicioData).subscribe({
           next: () => {
@@ -293,7 +299,7 @@ export class ServicioComponent implements OnInit {
           error: (err) => {
             console.error("Error al actualizar:", err);
             alert("Hubo un error al actualizar el servicio");
-          },
+          }
         });
       } else {
         this.servicioService.create(servicioData).subscribe({
@@ -305,11 +311,12 @@ export class ServicioComponent implements OnInit {
           error: (err) => {
             console.error("Error al crear:", err);
             alert("Hubo un error al crear el servicio");
-          },
+          }
         });
       }
     }
   }
+  
 
   editServicio(servicio: Servicio) {
     this.showForm = true;
@@ -345,4 +352,17 @@ export class ServicioComponent implements OnInit {
     this.showForm = false;
     this.form.reset();
   }
+}
+
+function convertirHoraAFormatoCorrecto(hora12: string): string {
+  const [time, modifier] = hora12.split(' ');
+  let [hours, minutes] = time.split(':').map(Number);
+  
+  if (modifier === 'PM' && hours !== 12) {
+    hours += 12;
+  } else if (modifier === 'AM' && hours === 12) {
+    hours = 0;
+  }
+
+  return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00`;
 }
