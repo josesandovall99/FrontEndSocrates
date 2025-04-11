@@ -88,7 +88,6 @@ import { TipoPlanService } from 'src/app/services/TipoPlan.Service';
               <th>Cliente</th>
               <th>Identificación</th>
               <th>Dirección</th>
-              
               <th>Acciones</th>
               
             </tr>
