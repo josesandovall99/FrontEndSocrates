@@ -257,7 +257,7 @@ export class LoginComponent {
 
     constructor(private authService: AuthService, private router: Router) { }
     
-    /*
+    
       login() {//LOGIN CON 123
         // Verifica si el username y el password son "123"
         if (this.numeroDocumento === '123456789' && this.password === '123456789') {
@@ -284,7 +284,7 @@ export class LoginComponent {
           this.message = 'Credenciales ERRONEAS';
         }
       }
-  */
+  /*
       
     //LOGIN CON TIPOS DE CARGO
     login() {
@@ -316,7 +316,7 @@ export class LoginComponent {
         );
     }
 
-
+*/
     isPasswordVisible: boolean = false;
 
     togglePassword(): void {
