@@ -15,12 +15,12 @@ export const routes: Routes = [
 
   // Rutas protegidas por AuthGuard
  
-  {path: 'empleado-dashboard' , component: EmpleadoDashboard, canActivate:[AuthGuard], data: {userType: 'admin'}}, // aqui estaran dos targetas para gestionar secretaria y tecnico
-  {path: 'empleado-secretaria' , component: EmpleadoSecretariaComponent, canActivate:[AuthGuard], data: {userType: 'admin'}},
-  {path: 'empleado-tecnico' , component: EmpleadoTecnicoComponent, canActivate:[AuthGuard], data: {userType: 'admin'}},
+  {path: 'empleado-dashboard' , component: EmpleadoDashboard, canActivate:[AuthGuard], data: {userType: 'administrador'}}, // aqui estaran dos targetas para gestionar secretaria y tecnico
+  {path: 'empleado-secretaria' , component: EmpleadoSecretariaComponent, canActivate:[AuthGuard], data: {userType: 'administrador'}},
+  {path: 'empleado-tecnico' , component: EmpleadoTecnicoComponent, canActivate:[AuthGuard], data: {userType: 'administrador'}},
   {path: 'tipo-plan', component:TipoPlanComponent},
   {path: 'solicitudservicio' , component: ServicioComponent},
-  {path: 'clientes' , component: clienteComponent,canActivate:[AuthGuard], data: {userType: 'admin'}},
+  {path: 'clientes' , component: clienteComponent,canActivate:[AuthGuard], data: {userType: 'administrador'}},
 
   //{path: 'solicitud-servicio' , component: SolicitudServicioComponent, canActivate:[AuthGuard], data: {userType: 'secretaria'}},
   
