@@ -256,6 +256,7 @@ export class LoginComponent {
     message: string = '';
 
     constructor(private authService: AuthService, private router: Router) { }
+    
     /*
       login() {//LOGIN CON 123
         // Verifica si el username y el password son "123"
@@ -284,7 +285,6 @@ export class LoginComponent {
         }
       }
   */
-
       
     //LOGIN CON TIPOS DE CARGO
     login() {

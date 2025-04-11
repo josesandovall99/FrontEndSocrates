@@ -6,7 +6,7 @@ import { Observable, BehaviorSubject, tap } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080/api/v1/login';
+  private apiUrl = 'https://backendsocrates.onrender.com/api/v1/login';
   private authStatus = new BehaviorSubject<boolean>(this.isAuthenticated());
 
   constructor(private http: HttpClient) {}
