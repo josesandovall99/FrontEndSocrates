@@ -14,7 +14,7 @@ interface StatCard {
   imports: [CommonModule],
   template: `
     <div class="dashboard">
-      <h1>ADMINISTRADOR</h1>
+      <h1>Hola.....</h1>
       <p>Bienvenido a la sección principal</p>
       
       <div class="stats-grid">
