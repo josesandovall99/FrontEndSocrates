@@ -251,20 +251,20 @@ body {
     `]
 })
 export class LoginComponent {
-    numeroDocumento: string = '123456789';
-    password: string = '123456789';
+    numeroDocumento: string = '123';
+    password: string = '123';
     message: string = '';
 
     constructor(private authService: AuthService, private router: Router) { }
     
-    /*
+    
       login() {//LOGIN CON 123
         // Verifica si el username y el password son "123"
-        if (this.numeroDocumento === '123456789' && this.password === '123456789') {
+        if (this.numeroDocumento === '123' && this.password === '123') {
           // Simula una respuesta exitosa del servidor
           const response = {
             message: 'Login successful',
-            userType: 'admin'  // Puedes cambiar a 'student' o 'teacher' según necesites
+            userType: 'administrador'  // Puedes cambiar a 'student' o 'teacher' según necesites
           };
       
           localStorage.setItem('authToken', 'true'); // Guarda el token
@@ -274,7 +274,7 @@ export class LoginComponent {
           this.authService.updateAuthStatus(true);
       
           // Redirige al dashboard adecuado según el tipo de usuario
-          if (response.userType === 'admin') {
+          if (response.userType === 'administrador') {
             this.router.navigate(['/empleado-dashboard']);
           } else if (response.userType === 'Secretaria') {
             this.router.navigate(['/solicitud-servicio']);
@@ -284,7 +284,7 @@ export class LoginComponent {
           this.message = 'Credenciales ERRONEAS';
         }
       }
-  */
+  /*
       
     //LOGIN CON TIPOS DE CARGO
     login() {
@@ -316,7 +316,7 @@ export class LoginComponent {
         );
     }
 
-
+*/
     isPasswordVisible: boolean = false;
 
     togglePassword(): void {
