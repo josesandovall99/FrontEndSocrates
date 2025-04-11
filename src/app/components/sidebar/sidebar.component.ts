@@ -20,9 +20,8 @@ interface MenuItem {
       </div>
       <div class="user-info">
         <img src="https://img.freepik.com/premium-vector/student-avatar-illustration-user-profile-icon-youth-avatar_118339-4396.jpg" alt="User" class="avatar">
-        <div class="user-details">
-          <h3>{{ usuario?.nombre || 'Usuario Desconocido' }}</h3> 
-          <span class="status">{{ usuario?.rol || 'Sin Rol' }}</span>
+        <div class="user-details"> 
+           <h3>Bienvenido</h3>
         </div>
       </div>
       <nav>
@@ -87,8 +86,6 @@ export class SidebarComponent {
     { path: '/tipo-plan', icon: 'fa-file-alt', label: 'Tipo Plan' }
   ];
 
-  constructor() {
-    this.usuario = this.authService.getUsuario(); // Cargamos el usuario logueado
-  }
+ 
   
 }

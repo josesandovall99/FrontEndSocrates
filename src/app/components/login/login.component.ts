@@ -251,15 +251,15 @@ body {
     `]
 })
 export class LoginComponent {
-    numeroDocumento: string = '123';
-    password: string = '123';
+    numeroDocumento: string = '123456789';
+    password: string = '123456789';
     message: string = '';
 
     constructor(private authService: AuthService, private router: Router) { }
     
       login() {//LOGIN CON 123
         // Verifica si el username y el password son "123"
-        if (this.numeroDocumento === '123' && this.password === '123') {
+        if (this.numeroDocumento === '123456789' && this.password === '123456789') {
           // Simula una respuesta exitosa del servidor
           const response = {
             message: 'Login successful',
