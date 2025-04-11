@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 interface MenuItem {
   path: string;
@@ -20,8 +21,8 @@ interface MenuItem {
       <div class="user-info">
         <img src="https://img.freepik.com/premium-vector/student-avatar-illustration-user-profile-icon-youth-avatar_118339-4396.jpg" alt="User" class="avatar">
         <div class="user-details">
-          <h3>Pedro Monsalve</h3>
-          <span class="status">Admin</span>
+          <h3>{{ usuario?.nombre || 'Usuario Desconocido' }}</h3> 
+          <span class="status">{{ usuario?.rol || 'Sin Rol' }}</span>
         </div>
       </div>
       <nav>
@@ -76,11 +77,18 @@ interface MenuItem {
   `]
 })
 export class SidebarComponent {
+  usuario: any = null;
+  private authService = inject(AuthService);
+  
   menuItems: MenuItem[] = [
     { path: '/empleado-dashboard', icon: 'fa-user-tie', label: 'Gestionar Empleados' },
     { path: '/clientes', icon: 'fa-users', label: 'Gestionar Clientes' },
     { path: '/solicitudservicio', icon: 'fa-clipboard-list', label: 'Solicitud de Servicios' },
     { path: '/tipo-plan', icon: 'fa-file-alt', label: 'Tipo Plan' }
   ];
+
+  constructor() {
+    this.usuario = this.authService.getUsuario(); // Cargamos el usuario logueado
+  }
   
 }
